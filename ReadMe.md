@@ -49,3 +49,11 @@ To use the library code
 2. Create an object and make use of the functions as you wish
 
 		new_content = Content("desired text")
+		
+The function can also be used individual text, not just the initial text the user input when creating the object. 
+In other words, if the user needs a simple text POS Tagged, Sentiment Analysed, stemmed etc. Those tasks can be completed individually.
+The user has the option to simply just include the text in the function as a parameter.
+*If the parameter is not None, 
+	the function will output the computation done on the input text
+*if the function parameter is left empty
+	the function will do the computation on the content value itself. (aka self.content)
