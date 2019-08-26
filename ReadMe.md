@@ -57,41 +57,4 @@ The user has the option to simply just include the text in the function as a par
 	the function will output the computation done on the input text
 *if the function parameter is left empty
 	the function will do the computation on the content value itself. (aka self.content)
-	
-	
-	
-	
-	
-	
-	
 
-		
-if __name__ == "__main__":
-#	text2Analyze = "Seoul, South Korea (CNN)South Korea is scrapping its military intelligence-sharing agreement with Japan, the latest escalation in a trade dispute that threatens global supply chains for smartphones and other gadgets. Kim You-geun, first deputy director of the Blue House National Security Office, said the move was in retaliation to Japans decision to exclude South Korea from its list of trusted trading partners.Under these circumstances, the government judged that it would not be in our national interest to keep the agreement in place, which was signed for the purpose of exchanging sensitive military information for security (purposes), Kim said.The rising tensions between the two countries have sparked worries around the world. We encourage Japan and Korea to work together to resolve their differences. I hope they can do this quickly, said Lt. Col. Dave Eastburn, a Pentagon spokesman. We are all stronger -- and northeast Asia is safer -- when the United States, Japan, and Korea work together in solidarity and friendship, he said, adding that intelligence sharing was key to developing common defense policy and strategy.The standoff between Tokyo and Seoul started last month when Japan placed new restrictions on the export of three chemical materials to South Korea. Those chemicals are used in computer chips manufacturing -- a key part of the South Korean economy. The new rules delay exports as Japanese companies must apply for licenses for each of the materials, a process that can take up to 90 days. But tension between the two countries has been rising for months, stemming in part from Japans colonial rule over the Korean peninsula in the early 20th century. South Koreas top court recently ruled that its citizens can sue Japanese companies for using forced Korean labor during World War II. Japan has denied that the two issues are linked."
-
-	text2Analyze = "I just broke my leg! Flowers are beautiful! Today was my 2nd day at work. Once upon a time there was a cat, but the cat had no fur. The dog climbed up the bench today. I bought a new bag today. She was sick but atleast she got a day off from work. Finally, the quick brown fox jumped over the lazy dog."
-	paragraph = Content(text2Analyze)
-#	paragraph.pre_process()
-
-
-	print('tokenized')
-	print(paragraph.tokenize())
-	
-	print('sentiment_analysis')
-	print(paragraph.sentiment_analysis())
-	
-	print('clean_content')
-	print(paragraph.clean_content())
-	
-	print('remove_stopwords')
-	print(paragraph.remove_stopwords())
-
-	print('POS tag')
-	print(paragraph.POS_tagging())
-
-	print('Stem')
-	print(paragraph.stem())
-
-
-	#paragraph.pre_process()
-	#paragraph.plot_word_cloud()
