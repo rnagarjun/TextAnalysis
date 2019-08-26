@@ -18,7 +18,6 @@ import urllib3
 #import beautifulsoup4
 
 
-
 def rejoin_text(list_of_text, delimeter=" "):
 	"""
 	Util function to put together text that's been fragmeted into lists	
@@ -43,11 +42,7 @@ class Content:
 	
 	def __init__(self, content, url=None):
 		"""
-		intializing of content class
-		Connects the Comment class to the pands object
-		Note:
-		countStatus will be reprsented in binary
-		Example: 0101 -> sentence: False, words: True, Sylabble: False, character: True
+		intializing of content class and store the status of the content at each stage
 		"""
 		# hold raw text value
 		self.content = content
@@ -63,7 +58,6 @@ class Content:
 		# initialing counts
 		self.counts = {'sentences': 0, 'words': 0, 'sylabble': 0, 'characters': 0}
 
-	
 	def pre_process(self, clean=True, remove_stopwords = True, stem=True, custom_regex=None) -> None:
 		"""
 		(self: Content, clean: bool, remove_stopwords: bool, stem: bool, custom_regex: str)
@@ -72,11 +66,9 @@ class Content:
 		"""
 		self.tokenize()
 		self.clean_content()
-		#self.remove_stopwords()
-		#self.stem()
+		self.remove_stopwords()
+		self.stem()
 
-
-	
 	def tokenize(self, text=None):
 		"""
 		(self: Content, text: str) -> List[str]
@@ -100,8 +92,7 @@ class Content:
 		"""
 		#cfg_list = Counter(tag for word,tag in cleaned_text)
 		return nltk.pos_tag(text.split()) if text else nltk.pos_tag(self.pre_processed)
-		
-	
+
 	def stem(self, text=None, stopwords=True):
 		"""
 		(self: Content, text: str) -> list[list[str]]
@@ -147,7 +138,7 @@ class Content:
 			self.pre_process_status['stopwords_removed'] = True
 
 		return rejoin_text(stopwords_removed)
-	
+
 	def calculate_ari(self) -> float:
 		"""
 		Calculate the artifical readability index for a given text
@@ -182,23 +173,15 @@ class Content:
 			polarity_calculated[sentence] = list()
 			ss = sid.polarity_scores(sentence)
 			for k in sorted(ss):
-				temp = '{0}: {1} '.format(k, ss[k])
-				
-				pol_stat = temp
-				#(k+': '+ ss[k])
+				pol_stat = '{0}: {1} '.format(k, ss[k])
 				polarity_calculated[sentence].append(pol_stat)
-				#print('{0}: {1}, '.format(k, ss[k]), end='')
-			#print()
-		print(polarity_calculated)
+
 		return polarity_calculated
-	
-	def count_syllable(word) -> None:
+
+	def count_syllable(word):
 		"""
 		count the number of syllable in a given word
-		
-		EXAMPLE
-		>>> word
-		>>> sylabble
+		>>> 
 		"""
 		word = word.lower()
 		count = 0
@@ -213,9 +196,10 @@ class Content:
 		if count == 0:
 			count += 1
 		return count
-	
-	def clean_content(self, text=None, punctuations=True, digits=True, custom_regex=None) -> None:
+
+	def clean_content(self, text=None, punctuations=True, digits=True, custom_regex=None):
 		"""
+		(self, text: str, punctuation: bool, digits: bool, custom_regex: str) -> str
 		Clean the text based on the given conditions, if puntuation
 		and digits are specificed as false, then the clean will not eliminate those
 		contents from the text.
@@ -244,7 +228,7 @@ class Content:
 			self.pre_process_status['cleaned_content'] = True
 		return rejoin_text(cleaned, ". ")
 
-	def plot_word_cloud(self, title="wordCloud", text=None, width=600, height=400):
+	def plot_word_cloud(self, title="wordCloud", text=None, width=600, height=400) -> None:
 		"""
 		Creates word cloud using the text from pre_processed
 		A new file with the title.png will be created in the directory
@@ -260,6 +244,7 @@ class Content:
 
 	def raw_source(self, url=None):
 		"""
+		(self, url: str) -> str
 		Returns the raw webpage content
 		"""
 		http = urllib3.PoolManager()
@@ -270,33 +255,4 @@ class Content:
 			response = http.request('GET', self.source)
 			return response.data
 
-		
-if __name__ == "__main__":
-#	text2Analyze = "Seoul, South Korea (CNN)South Korea is scrapping its military intelligence-sharing agreement with Japan, the latest escalation in a trade dispute that threatens global supply chains for smartphones and other gadgets. Kim You-geun, first deputy director of the Blue House National Security Office, said the move was in retaliation to Japans decision to exclude South Korea from its list of trusted trading partners.Under these circumstances, the government judged that it would not be in our national interest to keep the agreement in place, which was signed for the purpose of exchanging sensitive military information for security (purposes), Kim said.The rising tensions between the two countries have sparked worries around the world. We encourage Japan and Korea to work together to resolve their differences. I hope they can do this quickly, said Lt. Col. Dave Eastburn, a Pentagon spokesman. We are all stronger -- and northeast Asia is safer -- when the United States, Japan, and Korea work together in solidarity and friendship, he said, adding that intelligence sharing was key to developing common defense policy and strategy.The standoff between Tokyo and Seoul started last month when Japan placed new restrictions on the export of three chemical materials to South Korea. Those chemicals are used in computer chips manufacturing -- a key part of the South Korean economy. The new rules delay exports as Japanese companies must apply for licenses for each of the materials, a process that can take up to 90 days. But tension between the two countries has been rising for months, stemming in part from Japans colonial rule over the Korean peninsula in the early 20th century. South Koreas top court recently ruled that its citizens can sue Japanese companies for using forced Korean labor during World War II. Japan has denied that the two issues are linked."
-
-	text2Analyze = "I just broke my leg! Flowers are beautiful! Today was my 2nd day at work. Once upon a time there was a cat, but the cat had no fur. The dog climbed up the bench today. I bought a new bag today. She was sick but atleast she got a day off from work. Finally, the quick brown fox jumped over the lazy dog."
-	paragraph = Content(text2Analyze)
-#	paragraph.pre_process()
-
-
-	print('tokenized')
-	print(paragraph.tokenize())
-	
-	print('sentiment_analysis')
-	print(paragraph.sentiment_analysis())
-	
-	print('clean_content')
-	print(paragraph.clean_content())
-	
-	print('remove_stopwords')
-	print(paragraph.remove_stopwords())
-
-	print('POS tag')
-	print(paragraph.POS_tagging())
-
-	print('Stem')
-	print(paragraph.stem())
-
-
-	#paragraph.pre_process()
-	#paragraph.plot_word_cloud()
+# More features to come, with better design...
